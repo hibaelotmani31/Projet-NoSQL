@@ -56,3 +56,90 @@ def q5_nombre_films_par_genre():
         {"$sort": {"nombreFilms": -1}}
     ])
     return list(resultat)
+
+# Q6 — Film avec le plus de revenu
+def q6_film_plus_revenu():
+    resultat = collection.find(
+        {"Revenue (Millions)": {"$ne": ""}}
+    ).sort(
+        {"Revenue (Millions)": -1}
+    ).limit(1)
+
+    return list(resultat)[0]
+
+# Q7 — Réalisateurs ayant réalisé plus de 5 films
+def q7_realisateurs_plus_5_films():
+    resultat = collection.aggregate([
+        {
+            "$group": {
+                "_id": "$Director",
+                "nombreFilms": {"$sum": 1}
+            }
+        },
+        {
+            "$match": {"nombreFilms": {"$gt": 5}}
+        },
+        {
+            "$sort": {"nombreFilms": -1}
+        }
+    ])
+
+    return list(resultat)
+
+# Q8 — Genre qui rapporte le plus en moyenne
+def q8_genre_plus_revenu_moyen():
+    resultat = collection.aggregate([
+        {
+            "$match": {
+                "Revenue (Millions)": {"$ne": ""}
+            }
+        },
+        {
+            "$group": {
+                "_id": "$genre",
+                "avgRevenue": {"$avg": "$Revenue (Millions)"}
+            }
+        },
+        {
+            "$sort": {"avgRevenue": -1}
+        },
+        {
+            "$limit": 1
+        }
+    ])
+
+    return list(resultat)[0]
+
+# Q9 — 3 films les mieux notés par décennie
+def q9_top_films_par_decennie():
+    resultat = collection.aggregate([
+        {
+            "$match": {"year": {"$ne": None}}
+        },
+        {
+            "$addFields": {
+                "decade": {
+                    "$multiply": [
+                        {"$floor": {"$divide": ["$year", 10]}},
+                        10
+                    ]
+                }
+            }
+        },
+        {
+            "$sort": {"Votes": -1}
+        },
+        {
+            "$group": {
+                "_id": "$decade",
+                "topFilms": {"$push": "$title"}
+            }
+        },
+        {
+            "$project": {
+                "topFilms": {"$slice": ["$topFilms", 3]}
+            }
+        }
+    ])
+
+    return list(resultat)

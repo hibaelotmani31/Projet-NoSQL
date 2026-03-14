@@ -8,7 +8,11 @@ from queries_mongo import (
     q3_moyenne_votes_2007,
     q4_films_par_annee,
     q5_genres_disponibles,
-    q5_nombre_films_par_genre
+    q5_nombre_films_par_genre,
+    q6_film_plus_revenu,
+    q7_realisateurs_plus_5_films,
+    q8_genre_plus_revenu_moyen,
+    q9_top_films_par_decennie
 )
 
 st.set_page_config(page_title="Projet NoSQL", layout="wide")
@@ -135,8 +139,50 @@ elif menu == "MongoDB - Questions 6 à 13":
 
     st.header("MongoDB — Requêtes avancées")
 
-    st.info("À venir...")
+    st.subheader("Q6 — Film avec le plus de revenu")
 
+    film = q6_film_plus_revenu()
+
+    st.success(
+        f"{film['title']} — Revenue : {film['Revenue (Millions)']} millions"
+    )
+    
+    st.subheader("Q7 — Réalisateurs ayant réalisé plus de 5 films")
+
+    realisateurs = q7_realisateurs_plus_5_films()
+
+    if realisateurs:
+        df = pd.DataFrame(realisateurs)
+
+        df = df.rename(columns={
+            "_id": "Réalisateur",
+            "nombreFilms": "Nombre de films"
+        })
+
+        st.dataframe(df)
+
+    else:
+        st.warning("Aucun réalisateur avec plus de 5 films dans la base.") 
+    st.subheader("Q8 — Genre avec revenu moyen le plus élevé")
+
+    genre = q8_genre_plus_revenu_moyen()
+
+    st.success(
+        f"Genre : {genre['_id']} — Revenu moyen : {round(genre['avgRevenue'],2)} millions"
+    )
+    
+    st.subheader("Q9 — Top 3 films par décennie")
+
+    data = q9_top_films_par_decennie()
+
+    df = pd.DataFrame(data)
+
+    df = df.rename(columns={
+        "_id": "Décennie",
+        "topFilms": "Top films"
+    })
+
+    st.dataframe(df) 
 # ===============================
 # Neo4j
 # ===============================
