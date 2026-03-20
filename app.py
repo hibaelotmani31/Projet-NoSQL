@@ -57,10 +57,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+import base64
+
+def image_en_base64(chemin):
+    with open(chemin, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap');
-
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Abril+Fatface&family=Cinzel:wght@400;700;900&display=swap');
     .stApp { background-color: #0a0a0a; color: #e5e5e5; }
     header[data-testid="stHeader"] { background-color: #0a0a0a !important; border-bottom: 1px solid #1a1a1a !important; }
     section[data-testid="stSidebar"] { background-color: #111111; }
@@ -179,13 +184,20 @@ def go_to(page):
 
 if st.session_state.page == "accueil":
 
-    st.markdown("""
-    <div style="padding: 60px 0 40px 0;">
-        <h1 class="hero-title">CineBase</h1>
-        <p style="font-family:'Bebas Neue',sans-serif; color:#333; font-size:1.4rem; 
-        letter-spacing:4px; margin-top:8px;">
-        102 films. Des donnees. Des histoires.
-        </p>
+    img = image_en_base64("images/cinema.jpg")
+    st.markdown(f"""
+    <div style="position:relative; width:100%; height:400px; 
+    overflow:hidden; border-radius:8px; margin-bottom:40px;">
+        <img src="data:image/jpeg;base64,{img}" 
+        style="width:100%; height:100%; object-fit:cover; 
+        opacity:0.4; filter:brightness(0.6);">
+        <div style="position:absolute; bottom:40px; left:40px;">
+            <h1 style="font-family:'Cinzel', cursive; font-size:7rem; color:#fffff; letter-spacing:2px; line-height:1; margin:0;">CineBase</h1>
+            <p style="font-family:'Bebas Neue',sans-serif; color:#555; 
+            font-size:1.4rem; letter-spacing:4px; margin-top:8px;">
+            +100 Films. Charts. Histoires.
+            </p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -232,7 +244,8 @@ if st.session_state.page == "accueil":
             go_to("recommandations")
 
     st.markdown('<div class="red-divider"></div>', unsafe_allow_html=True)
-    st.markdown('<p style="font-family:Inter,sans-serif; font-size:0.72rem; color:#333; text-align:center;">MongoDB Atlas — Neo4j AuraDB — Python 3.12 — Streamlit</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-family:Inter,sans-serif; font-size:0.72rem; color:#333; text-align:center;">MongoDB Atlas - Neo4j AuraDB - Python 3.12 - Streamlit</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-family:Inter,sans-serif; font-size:0.72rem; color:#333; text-align:center;">By Hiba, Hadil et Mayssam</p>', unsafe_allow_html=True)
 
 
 # TENDANCES ET STATISTIQUES

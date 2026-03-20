@@ -2,11 +2,11 @@ from pymongo import MongoClient
 from neo4j import GraphDatabase
 from config import MONGO_URI, MONGO_DB, NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD
 
-# connexion MongoDB
+#connexion MongoDB
 mongo_client = MongoClient(MONGO_URI)
 collection = mongo_client[MONGO_DB]["films"]
 
-# connexion Neo4j
+#connexion Neo4j
 driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 def importer_donnees():
@@ -15,7 +15,7 @@ def importer_donnees():
 
     with driver.session() as session:
         for film in films:
-            # créer le nœud Film
+            #créer le nœud Film
             session.run("""
                 MERGE (f:Film {id: $id})
                 SET f.title = $title,
@@ -36,7 +36,7 @@ def importer_donnees():
                 genre=film.get("genre", "")
             )
 
-            # créer le nœud Realisateur et la relation
+            #créer le nœud Realisateur et la relation
             director = film.get("Director", "")
             if director:
                 session.run("""
@@ -48,7 +48,7 @@ def importer_donnees():
                     id=str(film.get("_id"))
                 )
 
-            # créer les nœuds Acteurs et les relations
+            #créer les nœuds Acteurs et les relations
             actors = film.get("Actors", "")
             if actors:
                 for actor in actors.split(","):
