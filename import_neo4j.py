@@ -23,7 +23,8 @@ def importer_donnees():
                     f.Votes = $votes,
                     f.Revenue = $revenue,
                     f.rating = $rating,
-                    f.director = $director
+                    f.director = $director,
+                    f.genre = $genre
             """,
                 id=str(film.get("_id")),
                 title=film.get("title", ""),
@@ -31,7 +32,8 @@ def importer_donnees():
                 votes=film.get("Votes", 0),
                 revenue=film.get("Revenue (Millions)", 0),
                 rating=film.get("rating", ""),
-                director=film.get("Director", "")
+                director=film.get("Director", ""),
+                genre=film.get("genre", "")
             )
 
             # créer le nœud Realisateur et la relation
@@ -65,5 +67,24 @@ def importer_donnees():
 
     print("Import terminé !")
 
+
+def ajouter_genre():
+    """Met à jour uniquement le champ genre sur les nœuds Film existants"""
+    films = list(collection.find())
+    print(f"Mise à jour genres pour {len(films)} films...")
+
+    with driver.session() as session:
+        for film in films:
+            session.run("""
+                MATCH (f:Film {id: $id})
+                SET f.genre = $genre
+            """,
+                id=str(film.get("_id")),
+                genre=film.get("genre", "")
+            )
+
+    print("Genres ajoutés !")
+
+
 if __name__ == "__main__":
-    importer_donnees()
+    ajouter_genre()

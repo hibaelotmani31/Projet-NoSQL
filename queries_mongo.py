@@ -49,16 +49,6 @@ def q5_genres_disponibles():
     return [g["_id"] for g in resultat]
 
 
-#q5 : nombre de films par genre  //bonus
-def q5_nombre_films_par_genre():
-    resultat = collection.aggregate([
-        {"$project": {"genres": {"$split": ["$genre", ","]}}},
-        {"$unwind": "$genres"},
-        {"$group": {"_id": "$genres", "nombreFilms": {"$sum": 1}}},
-        {"$sort": {"nombreFilms": -1}}
-    ])
-    return list(resultat)
-
 #q6 : film avec le plus de revenu
 def q6_film_plus_revenu():
     resultat = collection.find(
