@@ -1,4 +1,4 @@
-# CineBase — Exploration NoSQL de Films
+# CineBase - Exploration NoSQL de Films
 
 Application web d'analyse et de visualisation de données cinématographiques, développée avec MongoDB, Neo4j et Streamlit.
 
@@ -7,8 +7,8 @@ Application web d'analyse et de visualisation de données cinématographiques, d
 ## Aperçu
 
 CineBase explore une base de **102 films** à travers deux bases de données NoSQL :
-- **MongoDB Atlas** — pour les requêtes d'agrégation et analyses statistiques
-- **Neo4j AuraDB** — pour l'analyse des relations entre acteurs et réalisateurs
+- **MongoDB Atlas** - pour les requêtes d'agrégation et analyses statistiques
+- **Neo4j AuraDB** - pour l'analyse des relations entre acteurs et réalisateurs
 
 L'application répond à **30 questions** réparties en 4 sections : Tendances, Revenus, Acteurs et Recommandations.
 
